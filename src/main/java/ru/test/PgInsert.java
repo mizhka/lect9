@@ -32,8 +32,8 @@ public class PgInsert {
 			List<Future<?>> futures = new ArrayList<>();
 
 			for (int i = 0; i < NUM_THREADS; i++) {
-				futures.add(executor.submit(new DatabaseWorker(i)));
-				//futures.add(executor.submit(new DatabaseWorkerBatch(i)));
+				//futures.add(executor.submit(new DatabaseWorker(i)));
+				futures.add(executor.submit(new DatabaseWorkerBatch(i)));
 			}
 
 			// Ожидание завершения всех потоков
@@ -157,7 +157,7 @@ public class PgInsert {
 	// Класс-рабочий для выполнения транзакций в отдельном потоке
 		static class DatabaseWorkerBatch implements Runnable {
 			private final int workerId;
-			private static final int BATCH_SIZE = 50;
+			private static final int BATCH_SIZE = 32;
 			public DatabaseWorkerBatch(int workerId) {
 				this.workerId = workerId;
 			}
